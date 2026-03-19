@@ -70,49 +70,50 @@
   </div>
 
   <script>
-    const zones = [
-      { label: "Your Local Time", zone: Intl.DateTimeFormat().resolvedOptions().timeZone, highlight: true },
-      { label: "Montreal", zone: "America/Montreal" },
-      { label: "London", zone: "Europe/London" },
-      { label: "Nairobi", zone: "Africa/Nairobi" },
-      { label: "Delhi", zone: "Asia/Kolkata" },
-      { label: "Sydney", zone: "Australia/Sydney" }
-    ];
+  const zones = [
+    { label: "Your Local Time", zone: Intl.DateTimeFormat().resolvedOptions().timeZone, highlight: true },
+    { label: "Montreal", zone: "America/Montreal" },
+    { label: "Los Angeles", zone: "America/Los_Angeles" },
+    { label: "London", zone: "Europe/London" },
+    { label: "Nairobi", zone: "Africa/Nairobi" },
+    { label: "Delhi", zone: "Asia/Kolkata" },
+    { label: "Sydney", zone: "Australia/Sydney" }
+  ];
 
-    function formatTime(zone) {
-      return new Intl.DateTimeFormat("en-CA", {
-        timeZone: zone,
-        weekday: "short",
-        hour: "numeric",
-        minute: "2-digit",
-        hour12: true
-      }).format(new Date());
-    }
+  function formatTime(zone) {
+    return new Intl.DateTimeFormat("en-CA", {
+      timeZone: zone,
+      weekday: "short",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true
+    }).format(new Date());
+  }
 
-    function renderTimes() {
-      const grid = document.getElementById("timeGrid");
-      const note = document.getElementById("visitorNote");
-      grid.innerHTML = "";
+  function renderTimes() {
+    const grid = document.getElementById("timeGrid");
+    const note = document.getElementById("visitorNote");
+    grid.innerHTML = "";
 
-      zones.forEach(item => {
-        const card = document.createElement("div");
-        card.className = "card" + (item.highlight ? " highlight" : "");
+    zones.forEach(item => {
+      const card = document.createElement("div");
+      card.className = "card" + (item.highlight ? " highlight" : "");
 
-        card.innerHTML = `
-          <div class="label">${item.label}</div>
-          <div class="time">${formatTime(item.zone)}</div>
-          <div class="label">${item.zone}</div>
-        `;
+      card.innerHTML = `
+        <div class="label">${item.label}</div>
+        <div class="time">${formatTime(item.zone)}</div>
+        <div class="label">${item.zone}</div>
+      `;
 
-        grid.appendChild(card);
-      });
+      grid.appendChild(card);
+    });
 
-      const userZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      note.textContent = `Detected visitor time zone: ${userZone}.`;
-    }
+    const userZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    note.textContent = `Detected visitor time zone: ${userZone}.`;
+  }
 
-    renderTimes();
-    setInterval(renderTimes, 60000);
-  </script>
+  renderTimes();
+  setInterval(renderTimes, 60000);
+</script>
 </body>
 </html>
