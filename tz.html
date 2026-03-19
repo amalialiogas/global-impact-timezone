@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Global Impact Time Zone Converter</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f7fafc;
+      color: #0f172a;
+    }
+    .widget {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+    h2 {
+      margin-top: 0;
+      font-size: 1.8rem;
+      color: #0a2540;
+    }
+    p {
+      margin-top: 0;
+      color: #334155;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .label {
+      font-size: 0.9rem;
+      color: #475569;
+      margin-bottom: 6px;
+    }
+    .time {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #0f172a;
+    }
+    .note {
+      margin-top: 18px;
+      font-size: 0.95rem;
+      color: #475569;
+    }
+    .highlight {
+      background: #e0f2fe;
+      border-color: #7dd3fc;
+    }
+  </style>
+</head>
+<body>
+  <div class="widget">
+    <h2>Global Impact Time Zone Converter</h2>
+    <p>Conference times compared across key regions, including your local time.</p>
+    <div class="grid" id="timeGrid"></div>
+    <div class="note" id="visitorNote"></div>
+  </div>
+
+  <script>
+    const zones = [
+      { label: "Your Local Time", zone: Intl.DateTimeFormat().resolvedOptions().timeZone, highlight: true },
+      { label: "Montreal", zone: "America/Montreal" },
+      { label: "London", zone: "Europe/London" },
+      { label: "Nairobi", zone: "Africa/Nairobi" },
+      { label: "Delhi", zone: "Asia/Kolkata" },
+      { label: "Sydney", zone: "Australia/Sydney" }
+    ];
+
+    function formatTime(zone) {
+      return new Intl.DateTimeFormat("en-CA", {
+        timeZone: zone,
+        weekday: "short",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true
+      }).format(new Date());
+    }
+
+    function renderTimes() {
+      const grid = document.getElementById("timeGrid");
+      const note = document.getElementById("visitorNote");
+      grid.innerHTML = "";
+
+      zones.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "card" + (item.highlight ? " highlight" : "");
+
+        card.innerHTML = `
+          <div class="label">${item.label}</div>
+          <div class="time">${formatTime(item.zone)}</div>
+          <div class="label">${item.zone}</div>
+        `;
+
+        grid.appendChild(card);
+      });
+
+      const userZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      note.textContent = `Detected visitor time zone: ${userZone}.`;
+    }
+
+    renderTimes();
+    setInterval(renderTimes, 60000);
+  </script>
+</body>
+</html>
